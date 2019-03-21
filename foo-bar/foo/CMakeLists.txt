@@ -26,7 +26,10 @@ install(EXPORT ${export_name}
         EXPORT_LINK_INTERFACE_LIBRARIES)
 
 # NOTE: for other cmake files in same build tree
-export(TARGETS foo FILE ${export_name}.cmake EXPORT_LINK_INTERFACE_LIBRARIES)
+export(EXPORT ${export_name} FILE ${export_name}.cmake)
+# NOTE: maybe same meaning?
+# export(TARGETS foo FILE ${export_name}.cmake EXPORT_LINK_INTERFACE_LIBRARIES)
+
 # NOTE: touch dummy file for other cmake files can find
 # NOTE: below command is run at prebuild
 file(TOUCH "${CMAKE_CURRENT_BINARY_DIR}/${export_name}.cmake")
