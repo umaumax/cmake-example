@@ -97,3 +97,55 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
                    ${CMAKE_CURRENT_BINARY_DIR}/foo)
 endif()
 ```
+
+### ExternalProject_Add git --depth 1
+```
+GIT_SHALLOW true # --depth 1
+```
+
+### googletest
+```
+include(ExternalProject)
+ExternalProject_Add(googletest
+  GIT_REPOSITORY "https://github.com/google/googletest.git"
+  GIT_TAG master
+  GIT_SHALLOW true # --depth 1
+  # NOTE: for local install
+  BUILD_COMMAND cd ../googletest-build && ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/lib ../googletest
+)
+```
+
+* しかし，googletestはinstallを利用しなくてもある程度簡単にファイルの指定が可能(下記参照)
+* その場合には，下記の変更を加えること
+```
+# remove BUILD_COMMAND
+INSTALL_COMMAND ""
+```
+
+### ExternalProject_Get_Property
+* NOTE: 取得したい値と変数が1対1対応しているので注意
+```
+ExternalProject_Get_Property(googletest source_dir)
+include_directories(${source_dir}/include)
+```
+
+```
+ExternalProject_Get_Property(googletest binary_dir)
+message("binary_dir:${binary_dir}")
+
+add_library(gtest STATIC IMPORTED)
+set_property(TARGET gtest PROPERTY IMPORTED_LOCATION ${binary_dir}/libgtest.a)
+add_library(gtest_main STATIC IMPORTED)
+set_property(TARGET gtest_main
+             PROPERTY IMPORTED_LOCATION ${binary_dir}/libgtest_main.a)
+add_library(gmock STATIC IMPORTED)
+set_property(TARGET gmock PROPERTY IMPORTED_LOCATION ${binary_dir}/libgmock.a)
+add_library(gmock_main STATIC IMPORTED)
+set_property(TARGET gmock_main
+             PROPERTY IMPORTED_LOCATION ${binary_dir}/libgmock_main.a)
+```
+
+### target名に対する出力ファイル名を変更する
+```
+SET_TARGET_PROPERTIES(${TARGET} PROPERTIES OUTPUT_NAME ${NEW_NAME})
+```
