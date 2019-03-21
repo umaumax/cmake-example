@@ -71,3 +71,29 @@ cmake -DCMAKE_INSTALL_PREFIX=$(mktemp -d install) ..
 
 * [お手軽な xxx\-config\.cmake の作成方法 \- Qiita]( https://qiita.com/osamu0329/items/134de918c0ffa7f0557b )
   * ConfigモードのほうがHINTSでパスを指定できるのおすすめ
+
+### あるcmakeが生成したファイルを他のcmakeで利用したい
+* [\[CMake\] ソースファイルプロパティは同じディレクトリのターゲットにしか見えない \- Qiita]( https://qiita.com/kktk-KO/items/201cfd0ee744059f39ed )
+
+`make`実行時にcommandが実行されることとなるが，依存関係となるため，下記の例では`bar`単体のcmakeは失敗することとなるので注意(コメント参照)
+
+`foo/CMakeLists.txt`
+```
+add_custom_command(OUTPUT a.txt COMMAND touch a.txt)
+add_custom_target(FOO_GENERATE_ATXT SOURCES a.txt) # このSOURCESは上記のOUTPUTに対応するcustom_commandを呼び出す
+```
+
+`bar/CMakeLists.txt`
+```
+add_custom_target(BAR_TARGET ALL DEPENDS FOO_GENERATE_ATXT) # 単体でbuildしたときに，make時にmake[2]: *** No rule to make target `../FOO_GENERATE_ATXT', needed by `CMakeFiles/BAR_TARGET'.  Stop.
+# or
+add_dependencies(bar FOO_GENERATE_ATXT) # 単体でbuildしたときに，cmake時にThe dependency target "FOO_GENERATE_ATXT" of target "bar" does not exist.
+```
+
+`bar/CMakeLists.txt`には下記を先頭に追加すれば，単体でbuildするときに依存先の解決ができる
+```
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../foo
+                   ${CMAKE_CURRENT_BINARY_DIR}/foo)
+endif()
+```
