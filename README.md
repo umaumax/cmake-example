@@ -149,3 +149,12 @@ set_property(TARGET gmock_main
 ```
 SET_TARGET_PROPERTIES(${TARGET} PROPERTIES OUTPUT_NAME ${NEW_NAME})
 ```
+
+----
+
+## FMI
+* [CMake: 便利なコマンド・変数 \- Qiita]( https://qiita.com/mrk_21/items/5e7ca775b463a4141a58 )
+* [CMakeスクリプトを作成する際のガイドライン \- Qiita]( https://qiita.com/shohirose/items/5b406f060cd5557814e9 )
+  * refactorに役立つ
+  * 非推奨/推奨な例が記述されているため，わかりやすい
+* [CMake: target\_link\_libraries\(PUBLIC/PRIVATE/INTERFACE\) の実践的な解説 \- Qiita]( https://qiita.com/chapuni/items/7ddffb46fa327c5bef43 )
