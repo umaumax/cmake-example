@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.5.2)
 project(hoge)
 
 set(${PROJECT_NAME}_SRCS hoge.cpp)
