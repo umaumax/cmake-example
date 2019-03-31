@@ -150,6 +150,98 @@ set_property(TARGET gmock_main
 SET_TARGET_PROPERTIES(${TARGET} PROPERTIES OUTPUT_NAME ${NEW_NAME})
 ```
 
+### scope
+
+* `find_package`は同じscopeで実行しないと意味がない
+  * つまり，`function`で呼び出すのではなく，`macro`で呼び出せば所望の動作となる
+  * add_subdirectory()の先は呼び出し元のスコープと同じだと考えられる
+
+### include(xxx.cmake)で実装していた部分を関数にしたときに，動作が変わった
+
+[How to set the global variable in a function for cmake? \- Stack Overflow]( https://stackoverflow.com/questions/10031953/how-to-set-the-global-variable-in-a-function-for-cmake )
+```
+set(GTEST_FOUND ${GTEST_FOUND} PARENT_SCOPE)
+set(GTEST_INCLUDE_DIRS ${GTEST_INCLUDE_DIRS} PARENT_SCOPE)
+set(GMOCK_INCLUDE_DIRS ${GMOCK_INCLUDE_DIRS} PARENT_SCOPE)
+set(GTEST_LIBRARIES ${GTEST_LIBRARIES} PARENT_SCOPE)
+```
+もしくは，CACHEとして扱う
+もしくは，`macro`を利用する
+[c\+\+ \- cmake \- weird side effects when find\_package is called from function as opposed to global scope \- Stack Overflow]( https://stackoverflow.com/questions/36724768/cmake-weird-side-effects-when-find-package-is-called-from-function-as-opposed )
+
+### cmakeでは""で変数を囲む場合と囲まない場合で挙動が大きく異なる
+```
+if(NOT ${GTEST_FOUND})
+  # if(NOT)となるので，false
+endif()
+if(NOT "${GTEST_FOUND}")
+  # if(NOT "")となるので，true
+endif()
+
+find_package(GTest)
+if(NOT "${GTEST_FOUND}")
+  # OK
+endif()
+if(NOT "${GTEST_FOUND}")
+  # OK
+endif()
+```
+
+### 文字列の中身が評価される
+```
+if("0")
+  message("\"0\": true")
+else()
+  message("\"0\": false")
+endif()
+if("1")
+  message("\"1\": true")
+else()
+  message("\"1\": false")
+endif()
+if("FALSE")
+  message("\"FALSE\": true")
+else()
+  message("\"FALSE\": false")
+endif()
+if("TRUE")
+  message("\"TRUE\": true")
+else()
+  message("\"TRUE\": false")
+endif()
+if(0)
+  message("0: true")
+else()
+  message("0: false")
+endif()
+if(1)
+  message("1: true")
+else()
+  message("1: false")
+endif()
+if(FALSE)
+  message("FALSE: true")
+else()
+  message("FALSE: false")
+endif()
+if(TRUE)
+  message("TRUE: true")
+else()
+  message("TRUE: false")
+endif()
+```
+
+```
+"0": false
+"1": true
+"FALSE": false
+"TRUE": true
+0: false
+1: true
+FALSE: false
+TRUE: true
+```
+
 ----
 
 ## FMI
