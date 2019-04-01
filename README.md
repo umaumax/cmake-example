@@ -242,6 +242,21 @@ FALSE: false
 TRUE: true
 ```
 
+### gtest
+* macでは`pthread`不要
+```
+find_package(GTest)
+find_package(Threads)
+
+target_link_libraries(${PROJECT_NAME} ${GTEST_LIBRARIES} ${GMOCK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+```
+
+* ubuntuでは`pthread`必要
+```
+find_package(GTest)
+target_link_libraries(${PROJECT_NAME} ${GTEST_LIBRARIES} ${GMOCK_LIBRARIES})
+```
+
 ----
 
 ## FMI
