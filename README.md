@@ -257,6 +257,18 @@ find_package(GTest)
 target_link_libraries(${PROJECT_NAME} ${GTEST_LIBRARIES} ${GMOCK_LIBRARIES})
 ```
 
+### installでコピーしたshell scriptに実行権限がない
+[linux \- cmake : How to change file permissions when installing? \- Stack Overflow]( https://stackoverflow.com/questions/19399705/cmake-how-to-change-file-permissions-when-installing )
+```
+install(
+    FILES common.sh
+    USE_SOURCE_PERMISSIONS
+    # or
+    # PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+    DESTINATION /rootfs/usr/bin
+)
+```
+
 ----
 
 ## FMI
