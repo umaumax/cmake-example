@@ -269,6 +269,14 @@ install(
 )
 ```
 
+## c++11
+```
+# 3.1~
+set(CMAKE_CXX_STANDARD 11)
+# old
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+```
+
 ----
 
 ## FMI
