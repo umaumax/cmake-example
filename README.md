@@ -269,12 +269,23 @@ install(
 )
 ```
 
-## c++11
+### c++11
 ```
 # 3.1~
 set(CMAKE_CXX_STANDARD 11)
 # old
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+```
+
+### option一覧を表示
+* [cmakeプロジェクトの設定項目一覧を表示させる \- かみのメモ]( https://kamino.hatenablog.com/entry/cmake-list-options )
+```
+cmake ..
+ccmake
+```
+
+```
+cmake -LH ..
 ```
 
 ----
