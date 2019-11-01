@@ -288,6 +288,23 @@ ccmake
 cmake -LH ..
 ```
 
+### find_packageをhookする
+* [CMakeを使ってみた \(7\) find\_packageとpkg\_check\_modulesによるライブラリ探索 \- wagavulin's blog]( https://www.wagavulin.jp/entry/2017/02/20/082608 )
+* [CMake: Of what use is find\_package\(\) if you need to specify CMAKE\_MODULE\_PATH anyway? \- Stack Overflow]( https://stackoverflow.com/questions/20746936/cmake-of-what-use-is-find-package-if-you-need-to-specify-cmake-module-path-an )
+```
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+find_package(OpenCV REQUIRED)
+```
+
+`./cmake/FindOpenCV.cmake`
+```
+find_package(OpenCV REQUIRED NO_MODULE)
+
+set(OpenCV_LIBRARIES opencv_features2d;opencv_core;opencv_flann;opencv_imgproc)
+set(OpenCV_LIBS ${OpenCV_LIBRARIES})
+set(OpenCV_LIB_COMPONENTS ${OpenCV_LIBRARIES})
+```
+
 ----
 
 ## FMI
