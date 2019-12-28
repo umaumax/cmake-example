@@ -305,6 +305,12 @@ set(OpenCV_LIBS ${OpenCV_LIBRARIES})
 set(OpenCV_LIB_COMPONENTS ${OpenCV_LIBRARIES})
 ```
 
+上記のようにわざわざhookせずとも
+```
+find_package(OpenCV REQUIRED features2d core calib3d imgproc)
+```
+とすることは可能(しかし、opencvのscriptによるライブラリの依存と実際のライブラリの依存は異なるので，完全に依存関係を制御したい場合には直接リンクするライブラリを`-l`で指定する方法となる)
+
 ----
 
 ## FMI
