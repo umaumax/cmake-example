@@ -311,6 +311,26 @@ find_package(OpenCV REQUIRED features2d core calib3d imgproc)
 ```
 とすることは可能(しかし、opencvのscriptによるライブラリの依存と実際のライブラリの依存は異なるので，完全に依存関係を制御したい場合には直接リンクするライブラリを`-l`で指定する方法となる)
 
+## cmakeのadd_testを相対パスとする方法
+
+```
+add_test(<name> <command> [<arg>...])
+```
+
+下記の場合は，絶対パスとなる仕様がある
+
+> Example usage:
+> 
+> add_test(NAME mytest
+>          COMMAND testDriver --config $<CONFIGURATION>
+>                             --exe $<TARGET_FILE:myexe>)
+> This creates a test mytest whose command runs a testDriver tool passing the configuration name and the full path to the executable file produced by target myexe.
+> 
+> Note CMake will generate tests only if the enable_testing() command has been invoked. The CTest module invokes the command automatically when the BUILD_TESTING option is ON.
+> add_test(<name> <command> [<arg>...])
+> Add a test called <name> with the given command-line. Unlike the above NAME signature no transformation is performed on the command-line to support target names or generator expressions.
+
+
 ----
 
 ## FMI
