@@ -122,6 +122,9 @@ ExternalProject_Add(googletest
 INSTALL_COMMAND ""
 ```
 
+* `GIT_REPOSITORY ""`: 何もじっこうしない，`GIT_TAG`によるcheckoutも行われない
+  * `git clone --mirror`で落としたディレクトリ`xxx.git`を指定するとlocalからcloneするようになるので，覚えておくと便利
+
 ### ExternalProject_Get_Property
 * NOTE: 取得したい値と変数が1対1対応しているので注意
 ```
